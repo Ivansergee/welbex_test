@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from datetime import datetime
 from app import db
 
 
@@ -7,13 +6,13 @@ from app import db
 class Record(db.Model):
 
     id: int
-    date: datetime
+    date: str
     title: str
     amount: int
     distance: int
 
     id = db.Column(db.Integer(), primary_key=True)
-    date = db.Column(db.Date())
+    date = db.Column(db.String(10))
     title = db.Column(db.String(50))
     amount = db.Column(db.Integer())
     distance = db.Column(db.Integer())

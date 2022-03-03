@@ -49,18 +49,39 @@
               </div>
         </form>
 
+        
+        <form class="row gx-3 gy-2 align-items-center" @submit.prevent="setFilter">
+            <div class="col-sm-3">
+              <select class="form-select" name="field" :class="{ 'is-invalid': errors.field }">
+                <option selected disabled hidden>Поле</option>
+                <option value="title">Название</option>
+                <option value="amount">Количество</option>
+                <option value="distance">Расстояние</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-select" name="condition" :class="{ 'is-invalid': errors.condition }">
+                  <option selected disabled hidden>Условие</option>
+                  <option value="eq">Равно</option>
+                  <option value="contains">Содержит</option>
+                  <option value="gt">Больше</option>
+                  <option value="lt">Меньше</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <input
+                  type="text"
+                  name="value"
+                  class="form-control"
+                  placeholder="Значение"
+                  :class="{ 'is-invalid': errors.value }"
+                >
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary">Отфильтровать</button>
+            </div>
+          </form>
 
-        <nav>
-            <ul class="pagination">
-              <li
-                class="page-item"
-                v-for="n in records.pages_count"
-                :class="{ active: parameters.page === n }"
-              >
-                  <a class="page-link" href="#" @click.prevent="setPage(n)">{ n }</a>
-              </li>
-            </ul>
-        </nav>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -118,7 +139,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="record in records.records">
+                <tr v-for="record in records">
                     <td>{ record.date }</td>
                     <td>{ record.title }</td>
                     <td>{ record.amount }</td>
@@ -126,6 +147,17 @@
                 </tr>
             </tbody>
         </table>
-        debug: { records.records }
+
+        <nav>
+            <ul class="pagination">
+              <li
+                class="page-item"
+                v-for="n in pages_count"
+                :class="{ active: parameters.page === n }"
+              >
+                  <a class="page-link" href="#" @click.prevent="setPage(n)">{ n }</a>
+              </li>
+            </ul>
+        </nav>
     </div>
 {% endblock  %}

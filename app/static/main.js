@@ -9,13 +9,18 @@ const TestApp = {
                 'amount': '',
                 'distance': '',
             },
+            pages_count: '',
             errors: [],
             records: [],
             parameters: {
                 'page': 1,
                 'order_by':'id',
                 'sort': 'asc',
-                'filter': '',
+                'filter': {
+                    'field': null,
+                    'condition': null,
+                    'value': null
+                }
             }
         }
     },
@@ -32,7 +37,10 @@ const TestApp = {
                 },
                 body: JSON.stringify(this.parameters)
             })
-            this.records = await response.json()
+            res = await response.json()
+            this.records = res.records
+            this.errors = res.errors
+            this.pages_count = res.pages_count
         },
         async createRecord(){
             await this.getRecords()
@@ -61,6 +69,12 @@ const TestApp = {
         },
         async setPage(page){
             this.parameters.page = page;
+            await this.getRecords()
+        },
+        async setFilter(submitEvent){
+            this.parameters.filter.field = submitEvent.target.elements.field.value
+            this.parameters.filter.condition = submitEvent.target.elements.condition.value
+            this.parameters.filter.value = submitEvent.target.elements.value.value
             await this.getRecords()
         }
     },

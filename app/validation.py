@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def validation_errors(data):
+def create_validation(data):
     title = data.get('title')
     date = data.get('date')
     amount = data.get('amount')
@@ -34,6 +34,43 @@ def validation_errors(data):
     except:
         pass
 
+    if any(errors.values()):
+        return errors
+    else:
+        return False
+
+
+def filter_validation(data):
+    value = data.get('value')
+    field = data.get('field')
+    condition = data.get('condition')
+    errors = {
+        'value': True,
+        'field': True,
+        'condition': True,
+    }
+    fields = ['title', 'amount', 'distance']
+    conditions = ['contains', 'eq', 'gt', 'lt']
+
+    if field and field in fields:
+        errors['field'] = False
+
+    if condition and condition in conditions:
+        if field == 'title' and condition != 'contains':
+            pass
+        else:
+            errors['condition'] = False
+
+    if value and len(value) < 50:
+        if condition != 'contains':
+            try:
+                int(value)
+                errors['value'] = False
+            except:
+                pass
+        else:
+            errors['value'] = False
+    
     if any(errors.values()):
         return errors
     else:
