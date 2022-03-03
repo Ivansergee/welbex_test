@@ -8,13 +8,13 @@ class Record(db.Model):
 
     id: int
     date: datetime
-    name: str
+    title: str
     amount: int
     distance: int
 
     id = db.Column(db.Integer(), primary_key=True)
     date = db.Column(db.Date())
-    name = db.Column(db.String(50))
+    title = db.Column(db.String(50))
     amount = db.Column(db.Integer())
     distance = db.Column(db.Integer())
 

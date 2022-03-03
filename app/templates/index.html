@@ -2,23 +2,130 @@
 
 {% block content %}
     <div id="app">
-        <table class="table table-stiped">
+        <form @submit.prevent="createRecord" class="mb-5">
+            <div class="row g-3">
+                <div class="col-sm">
+                  <input
+                    type="date"
+                    class="form-control"
+                    placeholder="Дата"
+                    :class="{ 'is-invalid': errors.date }"
+                    v-model="record.date"
+                  >
+                </div>
+                <div class="col-sm">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Название"
+                    :class="{ 'is-invalid': errors.title }"
+                    v-model="record.title"
+                  >
+                </div>
+                <div class="col-sm">
+                  <input
+                    type="number"
+                    min="0"
+                    class="form-control"
+                    placeholder="Количество"
+                    :class="{ 'is-invalid': errors.amount }"
+                    v-model="record.amount"
+                  >
+                </div>
+                <div class="col-sm">
+                    <input
+                        type="number"
+                        min="0"
+                        step="100"
+                        class="form-control"
+                        placeholder="Расстояние"
+                        :class="{ 'is-invalid': errors.distance }"
+                        v-model="record.distance"
+                    >
+                  </div>
+                <div class="col-sm">
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+              </div>
+        </form>
+
+
+        <nav>
+            <ul class="pagination">
+              <li
+                class="page-item"
+                v-for="n in records.pages_count"
+                :class="{ active: parameters.page === n }"
+              >
+                  <a class="page-link" href="#" @click.prevent="setPage(n)">{ n }</a>
+              </li>
+            </ul>
+        </nav>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Дата</th>
-                    <th>Название</th>
-                    <th>Количество</th>
-                    <th>Расстояние</th>
+                    <th>
+                        <a
+                            href="#"
+                            @click.prevent="setSort('title')"
+                            class="text-decoration-none"
+                        >Название
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-sort-down"
+                            viewBox="0 0 16 16">
+                            <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                        </svg>
+                      </a>
+                    </th>
+                    <th>
+                        <a
+                            href="#"
+                            class="text-decoration-none"
+                            @click.prevent="setSort('amount')"
+                        >Количество
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-sort-down"
+                            viewBox="0 0 16 16">
+                            <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                        </svg>
+                      </a>
+                    </th>
+                    <th>
+                        <a
+                            href="#"
+                            class="text-decoration-none"
+                            @click.prevent="setSort('distance')"
+                        >Расстояние
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-sort-down"
+                            viewBox="0 0 16 16">
+                            <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                        </svg>
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="record, index in records">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr v-for="record in records.records">
+                    <td>{ record.date }</td>
+                    <td>{ record.title }</td>
+                    <td>{ record.amount }</td>
+                    <td>{ record.distance }</td>
                 </tr>
             </tbody>
         </table>
+        debug: { records.records }
     </div>
 {% endblock  %}
