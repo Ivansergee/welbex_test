@@ -3,6 +3,13 @@ const { createApp } = Vue
 const TestApp = {
     data(){
         return {
+            condOptions: [
+                {'value': 'contains', 'text': 'Содержит'},
+                {'value': 'eq', 'text': 'Равно'},
+                {'value': 'lt', 'text': 'Меньше'},
+                {'value': 'gt', 'text': 'Больше'}
+            ],
+            selectedTitle: 'Поле',
             record: {
                 'date': '',
                 'title': '',
@@ -77,6 +84,17 @@ const TestApp = {
             this.parameters.filter.condition = submitEvent.target.elements.condition.value
             this.parameters.filter.value = submitEvent.target.elements.value.value
             await this.getRecords()
+        },
+        setCondOpt(){
+            if (this.selectedTitle === 'title'){
+                this.condOptions = [{'value': 'contains', 'text': 'Содержит'}]
+            } else {
+                this.condOptions = [
+                    {'value': 'eq', 'text': 'Равно'},
+                    {'value': 'lt', 'text': 'Меньше'},
+                    {'value': 'gt', 'text': 'Больше'}
+                ]
+            }
         }
     },
     delimiters: ['{', '}']

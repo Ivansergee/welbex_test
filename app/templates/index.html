@@ -51,7 +51,13 @@
         
         <form class="row gx-3 gy-2 align-items-center" @submit.prevent="setFilter">
             <div class="col-sm-3">
-              <select class="form-select" name="field" :class="{ 'is-invalid': errors.field }">
+              <select
+                class="form-select"
+                name="field"
+                v-model="selectedTitle"
+                :class="{ 'is-invalid': errors.field }"
+                @change="setCondOpt"
+              >
                 <option selected disabled hidden>Поле</option>
                 <option value="title">Название</option>
                 <option value="amount">Количество</option>
@@ -61,10 +67,7 @@
             <div class="col-sm-3">
                 <select class="form-select" name="condition" :class="{ 'is-invalid': errors.condition }">
                   <option selected disabled hidden>Условие</option>
-                  <option value="eq">Равно</option>
-                  <option value="contains">Содержит</option>
-                  <option value="gt">Больше</option>
-                  <option value="lt">Меньше</option>
+                  <option v-for="opt in condOptions" :value="opt.value">{ opt.text }</option>
                 </select>
             </div>
             <div class="col-sm-3">
