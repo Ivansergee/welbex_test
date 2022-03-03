@@ -1,4 +1,4 @@
-import operator
+from flask_migrate import Migrate
 from flask import Flask, render_template, jsonify, request
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
@@ -7,7 +7,7 @@ from sqlalchemy import desc
 from config import Config
 from validation import create_validation, filter_validation
 
-from json import dumps
+import operator
 
 
 load_dotenv('./.env')
@@ -16,6 +16,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 from models import Record
 
 

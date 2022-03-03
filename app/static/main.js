@@ -57,6 +57,7 @@ const TestApp = {
                 this.errors = await response.json()
             }
             await this.getRecords()
+
         },
         async setSort(order_by){
             if (this.parameters.order_by === order_by){

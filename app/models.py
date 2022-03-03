@@ -5,6 +5,8 @@ from app import db
 @dataclass
 class Record(db.Model):
 
+    __tablename__ = 'records'
+
     id: int
     date: str
     title: str
