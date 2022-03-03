@@ -61,8 +61,8 @@ def filter_validation(data):
         else:
             errors['condition'] = False
 
-    if value and len(value) < 50:
-        if condition != 'contains':
+    if value:
+        if condition != 'contains' or field != 'title':
             try:
                 int(value)
                 errors['value'] = False
